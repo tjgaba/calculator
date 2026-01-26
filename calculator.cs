@@ -1,63 +1,37 @@
 public class Calculator
 {
+    // Backing field for name
+    private string _name;
 
-    private string sName;
-
-    public string name{ 
-        get
-            {if(string.IsNullOrEmpty(sName))
-                {
-                    sName = "DefaultCalculator";
-                }
-                else
-                {
-                    name = sName;
-                }   
-                return sName;
-            }
-        set{ sName = value; }
-        }
-
-    public int result { get; set; }
-
-    
-    public Calculator(string s)
+    // Public property for calculator name
+    public string Name
     {
-        name = s;
+        get
+        {
+            if (string.IsNullOrEmpty(_name))
+                _name = "DefaultCalculator";
+
+            return _name;
+        }
+        set
+        {
+            _name = value;
+        }
     }
 
+    // Constructor with name
+    public Calculator(string name)
+    {
+        Name = name;
+    }
+
+    // Default constructor
     public Calculator()
     {
-        name = "DefaultCalculator";
+        Name = "DefaultCalculator";
     }
 
-
-    public int Add(int a, int b)
-    {
-        return a + b;
-    }
-
-    public int Subtract(int a, int b)
-    {
-        return a - b;
-    }
-
-    public int Multiply(int a, int b)
-    {
-        return a * b;
-    }
-
-    public double Divide(int a, int b)
-    {
-        if (b == 0)
-        {
-            throw new DivideByZeroException("Division by zero is not allowed.");
-        }
-        return a / b;
-    }
-
-
-
+    // Supported operations
     public enum OperationType
     {
         Add,
@@ -66,22 +40,29 @@ public class Calculator
         Divide
     }
 
+    // Individual operations
+    public int Add(int a, int b) => a + b;
+    public int Subtract(int a, int b) => a - b;
+    public int Multiply(int a, int b) => a * b;
 
-
-    public int Calculate (int a, int b, OperationType operation)
+    public int Divide(int a, int b)
     {
-        switch (operation)
+        if (b == 0)
+            throw new DivideByZeroException("Division by zero is not allowed.");
+
+        return a / b;
+    }
+
+    // Central calculation method
+    public int Calculate(int a, int b, OperationType operation)
+    {
+        return operation switch
         {
-            case OperationType.Add:
-                return Add(a, b);
-            case OperationType.Subtract:
-                return Subtract(a, b);
-            case OperationType.Multiply:
-                return Multiply(a, b);
-            case OperationType.Divide:
-                return (int)Divide(a, b);
-            default:
-                throw new InvalidOperationException("Invalid operation type.");
-        }
+            OperationType.Add => Add(a, b),
+            OperationType.Subtract => Subtract(a, b),
+            OperationType.Multiply => Multiply(a, b),
+            OperationType.Divide => Divide(a, b),
+            _ => throw new InvalidOperationException("Invalid operation type")
+        };
     }
 }
