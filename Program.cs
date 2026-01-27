@@ -1,66 +1,68 @@
-﻿// See https://aka.ms/new-console-template for more info
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;  
+﻿using CalculatorDomainDemo;
 
+/// <summary>
+/// Program.cs is the ENTRY POINT.
+/// 
+/// Its job is to:
+/// - Collect input
+/// - Call domain logic
+/// - Show output
+/// 
+/// It should NOT:
+/// - Contain business rules
+/// - Make complex decisions
+/// 
+/// In the booking system:
+/// - This is like a controller or API endpoint
+/// </summary>
+Console.WriteLine("=== Calculator Demo ===");
 
-namespace CalculatorApp
+// Create the domain object
+// This is similar to creating a service in a backend system
+var calculator = new Calculator("Standard Calculator");
+
+// Collect user input (UI concern)
+Console.Write("Enter first number: ");
+int a = int.Parse(Console.ReadLine()!);
+
+Console.Write("Enter second number: ");
+int b = int.Parse(Console.ReadLine()!);
+
+// UI presents choices
+Console.WriteLine("Choose operation:");
+Console.WriteLine("1 - Add");
+Console.WriteLine("2 - Subtract");
+Console.WriteLine("3 - Multiply");
+Console.WriteLine("4 - Divide");
+
+Console.Write("Selection: ");
+int selection = int.Parse(Console.ReadLine()!);
+
+// Translate UI input into a BUSINESS RULE
+// UI values should never leak into the domain
+OperationType operation = selection switch
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            // Ask for first number
-            Console.WriteLine("Please enter a first number:");
-            int number1 = int.Parse(Console.ReadLine());
+    1 => OperationType.Add,
+    2 => OperationType.Subtract,
+    3 => OperationType.Multiply,
+    4 => OperationType.Divide,
+    _ => throw new InvalidOperationException("Invalid selection")
+};
 
-            // Ask for second number
-            Console.WriteLine("Please enter a second number:");
-            int number2 = int.Parse(Console.ReadLine());
+// Create a request object (data only)
+// In booking: this would be a BookingRequest
+var request = new CalculationRequest(a, b, operation);
 
-            // Ask for operation
-            Console.WriteLine("Please enter an operation (+, -, *, /):");
-            string operationInput = Console.ReadLine();
+// Apply behaviour
+// Program.cs does not calculate anything itself
+int result = calculator.Calculate(
+    request.A,
+    request.B,
+    request.Operation
+);
 
-            // Convert string input to enum
-            Calculator.OperationType operationType;
-            
-            switch (operationInput)
-            {
-                case "+":
-                    operationType = Calculator.OperationType.Add;
-                    break;
-                case "-":
-                    operationType = Calculator.OperationType.Subtract;
-                    break;
-                case "*":
-                    operationType = Calculator.OperationType.Multiply;
-                    break;
-                case "/":
-                    operationType = Calculator.OperationType.Divide;
-                    break;
-                default:
-                    Console.WriteLine("Invalid operation.");
-                    return; // stop program if invalid
-            }
-
-            // Create calculator instance
-            Calculator calculator = new Calculator("SimpleCalculator");
-
-            // Create request object (data holder)
-            CalculationRequest request =
-                new CalculationRequest(number1, number2, operationType);
-
-            // Perform calculation
-            int result = calculator.Calculate(
-                request.A,
-                request.B,
-                request.Operation
-            );
-
-            // Output result
-            Console.WriteLine($"Result: {result}");
-        }
-    }
-}
+// Output result (UI concern)
+Console.WriteLine();
+Console.WriteLine($"Calculator: {calculator.Name}");
+Console.WriteLine($"Result: {result}");
+Console.WriteLine($"Last Result Stored: {calculator.LastResult}");
