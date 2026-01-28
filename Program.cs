@@ -66,3 +66,30 @@ Console.WriteLine();
 Console.WriteLine($"Calculator: {calculator.Name}");
 Console.WriteLine($"Result: {result}");
 Console.WriteLine($"Last Result Stored: {calculator.LastResult}");
+
+//View calculation history
+Console.WriteLine("Calculation History:");
+foreach(CalculationRequest req in calculator.History)
+{
+    Console.WriteLine(req);
+}
+
+//See how many additions were done
+var additions = calculator.GetAdditionHistory();
+Console.WriteLine($"Number of additions performed: {additions.Count}");
+
+Console.WriteLine("=== End of Demo ===");
+
+static void Main()
+{
+    try
+    {
+        List<>
+        await calculate.SaceLastAsync("history. json")
+        Console.WriteLine("calc history saved")
+    }
+    else
+    {
+        Console.WriteLine ("Failed to save calclator because" (ex Message))
+    }
+}
