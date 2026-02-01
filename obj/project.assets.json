@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Public\\CalculatorDomainDemo\\CalculatorDomainDemo.csproj",
+      "projectUniqueName": "C:\\Users\\Public\\calculator\\CalculatorDomainDemo.csproj",
       "projectName": "CalculatorDomainDemo",
-      "projectPath": "C:\\Users\\Public\\CalculatorDomainDemo\\CalculatorDomainDemo.csproj",
+      "projectPath": "C:\\Users\\Public\\calculator\\CalculatorDomainDemo.csproj",
       "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Public\\CalculatorDomainDemo\\obj\\",
+      "outputPath": "C:\\Users\\Public\\calculator\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
