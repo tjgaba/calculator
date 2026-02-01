@@ -1,95 +1,19 @@
-﻿using CalculatorDomainDemo;
+﻿using CalculatorDomain.Logic;
+using CalculatorDomain.Persistence;
+using CalculatorDomainDemo;
 
-/// <summary>
-/// Program.cs is the ENTRY POINT.
-/// 
-/// Its job is to:
-/// - Collect input
-/// - Call domain logic
-/// - Show output
-/// 
-/// It should NOT:
-/// - Contain business rules
-/// - Make complex decisions
-/// 
-/// In the booking system:
-/// - This is like a controller or API endpoint
-/// </summary>
-Console.WriteLine("=== Calculator Demo ===");
+var store = new FileCalculationStore("Data/calculations.json");
+var calculator = new CalculatorService(store);
 
-// Create the domain object
-// This is similar to creating a service in a backend system
-var calculator = new Calculator("Standard Calculator");
+await calculator.CalculateAsync(
+    new CalculationRequest(10, 5, OperationType.Add));
 
-// Collect user input (UI concern)
-Console.Write("Enter first number: ");
-int a = int.Parse(Console.ReadLine()!);
+await calculator.CalculateAsync(
+    new CalculationRequest(20, 4, OperationType.Divide));
 
-Console.Write("Enter second number: ");
-int b = int.Parse(Console.ReadLine()!);
+var history = await calculator.GetAllAsync();
 
-// UI presents choices
-Console.WriteLine("Choose operation:");
-Console.WriteLine("1 - Add");
-Console.WriteLine("2 - Subtract");
-Console.WriteLine("3 - Multiply");
-Console.WriteLine("4 - Divide");
-
-Console.Write("Selection: ");
-int selection = int.Parse(Console.ReadLine()!);
-
-// Translate UI input into a BUSINESS RULE
-// UI values should never leak into the domain
-OperationType operation = selection switch
+foreach (var calc in history)
 {
-    1 => OperationType.Add,
-    2 => OperationType.Subtract,
-    3 => OperationType.Multiply,
-    4 => OperationType.Divide,
-    _ => throw new InvalidOperationException("Invalid selection")
-};
-
-// Create a request object (data only)
-// In booking: this would be a BookingRequest
-var request = new CalculationRequest(a, b, operation);
-
-// Apply behaviour
-// Program.cs does not calculate anything itself
-int result = calculator.Calculate(
-    request.A,
-    request.B,
-    request.Operation
-);
-
-// Output result (UI concern)
-Console.WriteLine();
-Console.WriteLine($"Calculator: {calculator.Name}");
-Console.WriteLine($"Result: {result}");
-Console.WriteLine($"Last Result Stored: {calculator.LastResult}");
-
-//View calculation history
-Console.WriteLine("Calculation History:");
-foreach(CalculationRequest req in calculator.History)
-{
-    Console.WriteLine(req);
-}
-
-//See how many additions were done
-var additions = calculator.GetAdditionHistory();
-Console.WriteLine($"Number of additions performed: {additions.Count}");
-
-Console.WriteLine("=== End of Demo ===");
-
-static void Main()
-{
-    try
-    {
-        List<>
-        await calculate.SaceLastAsync("history. json")
-        Console.WriteLine("calc history saved")
-    }
-    else
-    {
-        Console.WriteLine ("Failed to save calclator because" (ex Message))
-    }
+    Console.WriteLine($"{calc.Left} {calc.Operation} {calc.Right} = {calc.Result}");
 }
